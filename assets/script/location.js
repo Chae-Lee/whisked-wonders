@@ -64,7 +64,7 @@ getRecipe1(); // Only ingredients
 
 var googleMapAPIKey = "AIzaSyDFfKtEpR4sFVJZEPpd4hkPhuRU6wmifGE";
 
-// Initialize and add the map
+// Initialize and add the map from Map JavaScript API https://developers.google.com/maps/documentation/javascript
 let map;
 
 async function initMap() {
@@ -91,3 +91,17 @@ async function initMap() {
 }
 
 initMap();
+
+// When the user enters the name of a dish, the restaurants/ bakeries with that dish will appear on the browser
+// Will the user need to enter a "location" into the input? - Perhaps try this option first, or the browser will get the approximate device location based on cell towers and WiFi nodes - Geolocation
+// Geolocation seems to be a bit more complicated, let's try that later
+
+var userAddress = "24%20Sussex%20Drive%20Ottawa%20ON";
+var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=24%20Sussex%20Drive%20Ottawa%20ON&key=" + googleMapAPIKey;
+
+fetch(geoCodingURL)
+.then(function(response){
+  return response.json();
+}).then(function(data){
+  console.log(data);
+})
