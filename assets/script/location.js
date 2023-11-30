@@ -97,11 +97,30 @@ initMap();
 // Geolocation seems to be a bit more complicated, let's try that later
 
 var userAddress = "24%20Sussex%20Drive%20Ottawa%20ON";
-var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=24%20Sussex%20Drive%20Ottawa%20ON&key=" + googleMapAPIKey;
+var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + userAddress + "&key=" + googleMapAPIKey;
 
 fetch(geoCodingURL)
 .then(function(response){
   return response.json();
 }).then(function(data){
   console.log(data);
+}) // Pass the lat and long values from the geoCoding into the Marker function
+
+var locationInputEl = document.getElementById('location-search-input');
+var locationBtnEl = document.getElementById('location-search-button');
+
+locationBtnEl.addEventListener('click',function(e){
+  e.preventDefault();
+
+  var locationInputText = locationInputEl.value.trim();
+  var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationInputText + "&key=" + googleMapAPIKey;
+
+  fetch(geoCodingURL)
+  .then(function(response){
+    return response.json();
+  }).then(function(data){
+    console.log(data);
+    
+  })
+
 })
