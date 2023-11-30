@@ -77,7 +77,7 @@ async function initMap(lat,lng,title) {
 
   // The map, centered at Uluru
   map = new Map(document.getElementById("map"), {
-    zoom: 4,
+    zoom: 15,
     center: position,
     mapId: "DEMO_MAP_ID",
   });
@@ -90,7 +90,7 @@ async function initMap(lat,lng,title) {
   });
 }
 
-// initMap(lat,lng,title);
+initMap(55.953252,-3.188267,"Edinburgh"); //Default location, just because I like Edinburgh
 
 // When the user enters the name of a dish, the restaurants/ bakeries with that dish will appear on the browser
 // Will the user need to enter a "location" into the input? - Perhaps try this option first, or the browser will get the approximate device location based on cell towers and WiFi nodes - Geolocation
