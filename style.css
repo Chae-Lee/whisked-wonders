@@ -2,7 +2,8 @@ body {
     background-color: #E48F45;
 }
 
-.bakery-1 {
-   background-size: cover;
+.bakery-1 img {
+  height: 100%;
+  width: 100%;
 
 }
