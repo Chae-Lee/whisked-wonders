@@ -17,20 +17,6 @@ fetch (recipeAPI)
     console.log (data);
   })
 
-// fetch (recipeAPI)
-//   .then (response => {
-//     if (!response.ok){
-//       console.log (error);
-//     }
-//     return response.json();
-//   })
-//   .then (data=>{
-//     console.log (data);
-//   })
-//   .catch (error => {
-//     console.log (error);
-//   })
-
 // Confirmation that the API data can be fetched
 var fetchData = async ()=>{
 const url = 'https://the-birthday-cake-db.p.rapidapi.com/';
@@ -41,15 +27,14 @@ const options = {
 		'X-RapidAPI-Host': 'the-birthday-cake-db.p.rapidapi.com'
 	}
 };
-
 try {
 	const response = await fetch(url, options);
 	const result = await response.text();
 	console.log(result);
 } catch (error) {
 	console.error(error);
-}
-}
+}}
 
 fetchData ();
+
 
