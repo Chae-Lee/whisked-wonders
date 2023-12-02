@@ -9,17 +9,27 @@
   4) When a recipe is selected the full recipe with the ingredients, methods and image displays 
     - on a separate page? or directly within the recipe html page
 */
+
+//Variables 
+var easyRecipe =[];
+var mediumRecipe = [];
+var hardRecipe = [];
+var recipeIndex = 0;
+// var recipeName =  ;
+// var recipeDifficulty = ; 
+
+
 // // Testing and Confirmation that the API data can be fetched
 var fetchData = async ()=>{
-const url = 'https://the-birthday-cake-db.p.rapidapi.com/';
-const options = {
+var url = 'https://the-birthday-cake-db.p.rapidapi.com/';
+var options = {
 	method: 'GET',
 	headers: {
 		'X-RapidAPI-Key': '637d11b810msh7d4930cc5d05c6ep1b0fcdjsnb524ebfaaff6',
 		'X-RapidAPI-Host': 'the-birthday-cake-db.p.rapidapi.com'
 	}
 };
-// //try catch statement that can be used to pull the data from the API
+// //try catch statement that can be used to check that data can be pulled from the API
 // try {
 // 	const response = await fetch(url, options);
 // 	const result = await response.text();
@@ -33,16 +43,24 @@ fetch (url, options)
   return response.json ();
 }).then (function(data){
   console.log (data);
+  // console.log (data[0].id);
+  // console.log (data[0].title);
+  // console.log (data[0].difficulty);
+  // console.log (data[0].image);
+
+    data.sort ((a,b,c) =>{
+      var easyR = a.difficulty();
+      var mediumR = b.difficulty();
+      var hardR = c.difficulty();
+    })
+
+  for (var i=0; i<data.length; i++){
+    if (data.length.difficulty === 'easy'){
+      console.log (data[i].difficulty);
+      easyRecipe.push()
+    }
+    }
 })
 };
 
 fetchData ();
-
-//Variables 
-var easy =[];
-var medium = [];
-var hard = [];
-
-for (var i=0; i<fetchData.length; i++){
-  console.log (i);
-}
