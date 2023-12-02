@@ -6,6 +6,12 @@ var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
 var mapBoxAPIKey = "pk.eyJ1IjoiaGFwaGFubWFya3VzIiwiYSI6ImNscG56eDdjNTByMGIyanQzczRvZ3RyZm0ifQ.xc-W80Cv1QN_hWUug9_O9w";
+var suggestPlaceEl = document.getElementsByClassName('suggested-place');
+var placeNamePara = document.getElementsByClassName('placename');
+var addressPara = document.getElementsByClassName('address');
+
+console.log(placeNamePara);
+console.log(addressPara);
 
 var availableDish = [
   "Raspberry and custard muffins",
@@ -120,13 +126,18 @@ locationBtnEl.addEventListener('click',function(e){
     //   console.log(dataNearby);
     // })
 
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[29].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lng-0.5) + "," + (lat-0.022609293) + "," + (lng+0.5) + "," + (lat+0.022609293);
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[29].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lng-0.5) + "," + (lat-0.022609293) + "," + (lng+0.5) + "," + (lat+0.022609293) + "&limit=10";
     console.log(mapBoxURL);
     fetch(mapBoxURL)
     .then(function(response){
       return response.json()
-    }).then(function(data){
-      console.log(data);
+    }).then(function(dataMapBox){
+      console.log(dataMapBox);
+
+      for (let i = 0; i< dataMapBox.features.length;i++){
+        placeNamePara[i].innerHTML = dataMapBox.features[i].text;
+        addressPara[i].innerHTML = dataMapBox.features[i].place_name;
+      }
     })
 
   }).catch(function(error){
