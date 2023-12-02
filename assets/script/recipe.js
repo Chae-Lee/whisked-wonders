@@ -8,13 +8,14 @@
     - for loop so that this occurs for all levels of difficulty 
   4) When a recipe is selected the full recipe with the ingredients, methods and image displays 
     - on a separate page? or directly within the recipe html page
+    - search the recipe by id
 */
 
 //Variables 
 var easyRecipe =[];
 var mediumRecipe = [];
 var hardRecipe = [];
-var recipeIndex = 0;
+var recipeIndex = "";
 // var recipeName =  ;
 // var recipeDifficulty = ; 
 
@@ -41,26 +42,37 @@ var options = {
 fetch (url, options)
   .then (function(response){
   return response.json ();
-}).then (function(data){
-  console.log (data);
+  }).then (function(data){
+    // console.log (data);
   // console.log (data[0].id);
   // console.log (data[0].title);
   // console.log (data[0].difficulty);
   // console.log (data[0].image);
+  // console.log (JSON.stringify(data));
+  recipeIndex = JSON.stringify(data); //to store the fetched data in a global variable
+  return recipeIndex;
+// List of recipes displayed on html page 
+    console.log (recipeIndex);
 
-    data.sort ((a,b,c) =>{
-      var easyR = a.difficulty();
-      var mediumR = b.difficulty();
-      var hardR = c.difficulty();
-    })
+    var recipeEl = document.getElementById ('recipe')
+    var displayRecipes = document.createElement ('li')
+    displayRecipes.textContent = listOfRecipes;
+    recipeEl.appendChild (displayRecipes);
 
-  for (var i=0; i<data.length; i++){
-    if (data.length.difficulty === 'easy'){
-      console.log (data[i].difficulty);
-      easyRecipe.push()
-    }
-    }
+  // // need to create different li elements for each recipes and also display the images 
+  //   // create a div and then pull the image link to display? 
+
+  // for (var i=0; i<data.length; i++){
+
+
+
+    // if (data.length.difficulty === 'easy'){
+    //   console.log (data[i].difficulty);
+    //   easyRecipe.push()
+//     // }
+//     }
 })
 };
 
 fetchData ();
+console.log (recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
