@@ -1,5 +1,7 @@
 var googleMapAPIKey = "AIzaSyDFfKtEpR4sFVJZEPpd4hkPhuRU6wmifGE";
 var map;
+var newPlace = {lat: 55.953252, lng: -3.188267}
+
 var service;
 var infowindow;
 var locationInputEl = document.getElementById('location-search-input');
@@ -9,9 +11,6 @@ var mapBoxAPIKey = "pk.eyJ1IjoiaGFwaGFubWFya3VzIiwiYSI6ImNscG56eDdjNTByMGIyanQzc
 var suggestPlaceEl = document.getElementsByClassName('suggested-place');
 var placeNamePara = document.getElementsByClassName('placename');
 var addressPara = document.getElementsByClassName('address');
-
-console.log(placeNamePara);
-console.log(addressPara);
 
 var availableDish = [
   "Raspberry and custard muffins",
@@ -76,7 +75,7 @@ var availableDish = [
 ]
 
 // Initialize and add the map from Map JavaScript API https://developers.google.com/maps/documentation/javascript
-async function initMap(lat,lng,title) {
+async function initMap(lat,lng,setMarkersArr = []) {
   const position = { lat: lat, lng: lng };
   // Request needed libraries.
   //@ts-ignore
@@ -89,15 +88,30 @@ async function initMap(lat,lng,title) {
     mapId: "DEMO_MAP_ID",
   });
 
-  // The marker, positioned at Uluru
+  // The marker
   const marker = new AdvancedMarkerElement({
     map: map,
     position: position,
-    title: title,
+    title: "Hello World",
   });
+
+  if (setMarkersArr.length == 0){
+    return;
+  } else {
+    setMarkers(setMarkersArr,map);
+  }
 }
 
-initMap(55.953252,-3.188267,"Edinburgh"); //Default location, just because I like Edinburgh
+function setMarkers(places,map){
+  for (let i = 0; i < places.length;i++){
+    new google.maps.Marker({
+      position: places[i],
+      map
+    })
+  }
+}
+
+initMap(55.953252,-3.188267); //Default location, just because I like Edinburgh
 
 locationBtnEl.addEventListener('click',function(e){
   e.preventDefault();
@@ -111,12 +125,34 @@ locationBtnEl.addEventListener('click',function(e){
   }).then(function(dataGeoCode){
     console.log(dataGeoCode);
     // console.log(dataGeoCode.results[0].geometry.location.lat);
-    var lat = dataGeoCode.results[0].geometry.location.lat;
-    var lng = dataGeoCode.results[0].geometry.location.lng;
+    var latNewPlace = dataGeoCode.results[0].geometry.location.lat;
+    var lngNewPlace = dataGeoCode.results[0].geometry.location.lng;
     var title = dataGeoCode.results[0].formatted_address;
 
-    initMap(lat,lng,title);
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[10].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.5) + "," + (latNewPlace-0.022609293) + "," + (lngNewPlace+0.5) + "," + (latNewPlace+0.022609293) + "&limit=10";
 
+    fetch(mapBoxURL)
+    .then(function(response){
+      return response.json()
+    }).then(function(dataMapBox){
+      console.log(dataMapBox);
+
+      var places = [];
+      for (let i = 0; i< dataMapBox.features.length;i++){
+        placeNamePara[i].innerHTML = dataMapBox.features[i].text;
+        addressPara[i].innerHTML = dataMapBox.features[i].place_name;
+        var coordinates = {
+          lat: dataMapBox.features[i].geometry.coordinates[1],
+          lng: dataMapBox.features[i].geometry.coordinates[0]
+        }
+        places.push(coordinates);
+      }
+      console.log(places);
+
+      initMap(latNewPlace,lngNewPlace,places);      
+    })
+
+    
     // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     // console.log(nearbySearchURL);
     // fetch(nearbySearchURL)
@@ -125,20 +161,6 @@ locationBtnEl.addEventListener('click',function(e){
     // }).then(function(dataNearby){
     //   console.log(dataNearby);
     // })
-
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[29].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lng-0.5) + "," + (lat-0.022609293) + "," + (lng+0.5) + "," + (lat+0.022609293) + "&limit=10";
-    console.log(mapBoxURL);
-    fetch(mapBoxURL)
-    .then(function(response){
-      return response.json()
-    }).then(function(dataMapBox){
-      console.log(dataMapBox);
-
-      for (let i = 0; i< dataMapBox.features.length;i++){
-        placeNamePara[i].innerHTML = dataMapBox.features[i].text;
-        addressPara[i].innerHTML = dataMapBox.features[i].place_name;
-      }
-    })
 
   }).catch(function(error){
     console.error(error);
@@ -212,33 +234,6 @@ locationBtnEl.addEventListener('click',function(e){
 //     }
 // }
 // getRecipe();
-
-// async function getRecipe1(){
-//     const url = 'https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=chicken%20soup';
-//     const options = {
-// 	    method: 'GET',
-// 	    headers: {
-// 		    'X-RapidAPI-Key': 'e0faed762bmsh60b9c6ae7e9fa90p165d20jsn437c35637387',
-// 		    'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
-// 	    }
-//     };
-
-//     try {
-// 	    const response = await fetch(url, options);
-// 	    const result = await response.text();
-// 	    console.log(result);
-//     } catch (error) {
-// 	    console.error(error);
-//     }
-// }
-// getRecipe1(); // Only ingredients
-
-
-
-
-
-
-
 
 // When the user enters the name of a dish, the restaurants/ bakeries with that dish will appear on the browser
 // Will the user need to enter a "location" into the input? - Perhaps try this option first, or the browser will get the approximate device location based on cell towers and WiFi nodes - Geolocation
