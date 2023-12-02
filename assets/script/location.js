@@ -5,6 +5,41 @@ var infowindow;
 var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
+var mapBoxAPIKey = "pk.eyJ1IjoiaGFwaGFubWFya3VzIiwiYSI6ImNscG56eDdjNTByMGIyanQzczRvZ3RyZm0ifQ.xc-W80Cv1QN_hWUug9_O9w";
+
+var availableDish = [
+  "Raspberry and custard muffins",
+  "Lemon and blackberry stripe cake",
+  "Paul Hollywood’s chocolate fudge cake",
+  "Lemon and strawberry meringue cake",
+  "Vegan chocolate cake",
+  "Spiced plum cake with swiss meringue frosting",
+  "Lemon and courgette cake with white chocolate cream cheese frosting",
+  "Chocolate cake with caramel poached pears and chocolate buttercream",
+  "Rhubarb and custard layer cake",
+  "Spring lamb cupcakes",
+  "Peanut butter drip cake",
+  "Ginger drizzle traybake with cream cheese icing",
+  "Baked lemon cheesecake with pineapple flowers",
+  "Carrot and cheesecake layer cake",
+  "Sugarplum fairy cakes",
+  "Summer-cup bundt drizzle cake",
+  "St Clement’s squares",
+  "Caramelised white chocolate, burnt butter and tahini cake",
+  "Eric Lanlard’s carrot and pumpkin celebration cake",
+  "Tunnock’s teacake traybake",
+  "Easy butterfly cakes",
+  "Chocolate cupcakes",
+  "Orange blossom, lemon thyme and almond cake",
+  "Eton mess traybake",
+  "Nut-free carrot cupcakes",
+  "Raspberry and lemon sponge cake",
+  "Strawberry and rose victoria sponge sandwich",
+  "Toffee ice-cream cake",
+  "Easy flourless chocolate cake",
+  "Sticky toffee pudding cake"
+]
+
 // Initialize and add the map from Map JavaScript API https://developers.google.com/maps/documentation/javascript
 async function initMap(lat,lng,title) {
   const position = { lat: lat, lng: lng };
@@ -47,20 +82,27 @@ locationBtnEl.addEventListener('click',function(e){
 
     initMap(lat,lng,title);
 
-    var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
-    console.log(nearbySearchURL);
-    fetch(nearbySearchURL)
-    .then(function(response1){
-      return response1.json();
-    }).then(function(dataNearby){
-      console.log(dataNearby);
+    // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
+    // console.log(nearbySearchURL);
+    // fetch(nearbySearchURL)
+    // .then(function(response1){
+    //   return response1.json();
+    // }).then(function(dataNearby){
+    //   console.log(dataNearby);
+    // })
+
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[29].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lng-0.5) + "," + (lat-0.022609293) + "," + (lng+0.5) + "," + (lat+0.022609293);
+    console.log(mapBoxURL);
+    fetch(mapBoxURL)
+    .then(function(response){
+      return response.json()
+    }).then(function(data){
+      console.log(data);
     })
 
   }).catch(function(error){
     console.error(error);
   })
-
-  
 })
 
 
