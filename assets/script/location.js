@@ -98,18 +98,19 @@ async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
   }
 }
 
-async function setMarkers(places,map){
-  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
-  
-  const pinBackground = new PinElement({
-    background: "#FBBC04",
-  });
+function setMarkers(places,map){
+  // const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
   for (let i = 0; i < places.length;i++){
-    const marker = new AdvancedMarkerElement({
+    const pinBackground = new google.maps.marker.PinElement({
+      background: "#FBBC04",
+    }); // Add feature for the new marker. Each const pinBackground can only be used once for each marker, so it needs to be in the for loop.
+
+    const marker = new google.maps.marker.AdvancedMarkerElement({
       position: places[i],
       map,
       content: pinBackground.element
     })
+    console.log(marker);
   }
 }
 
