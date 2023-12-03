@@ -3,3 +3,7 @@
     height: 400px; /* The height is 400 pixels */
     width: 60%; /* The width is the width of the web page */
 }
+
+#hide {
+    display: none;
+}

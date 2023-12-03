@@ -8,9 +8,7 @@ var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
 var mapBoxAPIKey = "pk.eyJ1IjoiaGFwaGFubWFya3VzIiwiYSI6ImNscG56eDdjNTByMGIyanQzczRvZ3RyZm0ifQ.xc-W80Cv1QN_hWUug9_O9w";
-var suggestPlaceEl = document.getElementsByClassName('suggested-place');
-var placeNamePara = document.getElementsByClassName('placename');
-var addressPara = document.getElementsByClassName('address');
+var suggestPlaceEl = document.getElementById('suggested-place');
 
 var availableDish = [
   "Raspberry and custard muffins",
@@ -115,7 +113,7 @@ initMap(55.953252,-3.188267); //Default location, just because I like Edinburgh
 
 locationBtnEl.addEventListener('click',function(e){
   e.preventDefault();
-
+  
   var locationInputText = locationInputEl.value.trim();
   var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationInputText + "&key=" + googleMapAPIKey;
 
@@ -129,7 +127,7 @@ locationBtnEl.addEventListener('click',function(e){
     var lngNewPlace = dataGeoCode.results[0].geometry.location.lng;
     var title = dataGeoCode.results[0].formatted_address;
 
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[10].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.5) + "," + (latNewPlace-0.022609293) + "," + (lngNewPlace+0.5) + "," + (latNewPlace+0.022609293) + "&limit=10";
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[12].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.5) + "," + (latNewPlace-0.022609293) + "," + (lngNewPlace+0.5) + "," + (latNewPlace+0.022609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
 
     fetch(mapBoxURL)
     .then(function(response){
@@ -137,10 +135,25 @@ locationBtnEl.addEventListener('click',function(e){
     }).then(function(dataMapBox){
       console.log(dataMapBox);
 
-      var places = [];
+      var places = []; // Array to store coordinates for all returned places
+      
       for (let i = 0; i< dataMapBox.features.length;i++){
-        placeNamePara[i].innerHTML = dataMapBox.features[i].text;
-        addressPara[i].innerHTML = dataMapBox.features[i].place_name;
+        var cardEl = document.createElement('div');
+        suggestPlaceEl.appendChild(cardEl);
+        cardEl.classList.add('card');
+
+        var cardBodyEl = document.createElement('div');
+        cardEl.appendChild(cardBodyEl);
+        cardBodyEl.classList.add('card-body');
+
+        var placeHeader = document.createElement('h5');
+        placeHeader.innerHTML = "Place: " + dataMapBox.features[i].text;
+        cardBodyEl.appendChild(placeHeader);
+
+        var address = document.createElement('p');
+        address.innerHTML = "Address: " + dataMapBox.features[i].place_name;
+        cardBodyEl.appendChild(address);
+        
         var coordinates = {
           lat: dataMapBox.features[i].geometry.coordinates[1],
           lng: dataMapBox.features[i].geometry.coordinates[0]
@@ -150,9 +163,7 @@ locationBtnEl.addEventListener('click',function(e){
       console.log(places);
 
       initMap(latNewPlace,lngNewPlace,places);      
-    })
-
-    
+    })    
     // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     // console.log(nearbySearchURL);
     // fetch(nearbySearchURL)
@@ -161,13 +172,10 @@ locationBtnEl.addEventListener('click',function(e){
     // }).then(function(dataNearby){
     //   console.log(dataNearby);
     // })
-
   }).catch(function(error){
     console.error(error);
   })
 })
-
-
 
 // Test new API Text Search
 // var locationInputText = locationInputEl.value.trim();
