@@ -1,11 +1,14 @@
 var googleMapAPIKey = "AIzaSyDFfKtEpR4sFVJZEPpd4hkPhuRU6wmifGE";
 var map;
+var newPlace = {lat: 55.953252, lng: -3.188267} // Default location for the map
+
 var service;
 var infowindow;
 var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
 var mapBoxAPIKey = "pk.eyJ1IjoiaGFwaGFubWFya3VzIiwiYSI6ImNscG56eDdjNTByMGIyanQzczRvZ3RyZm0ifQ.xc-W80Cv1QN_hWUug9_O9w";
+var suggestPlaceEl = document.getElementById('suggested-place');
 
 var availableDish = [
   "Raspberry and custard muffins",
@@ -37,14 +40,42 @@ var availableDish = [
   "Strawberry and rose victoria sponge sandwich",
   "Toffee ice-cream cake",
   "Easy flourless chocolate cake",
-  "Sticky toffee pudding cake"
+  "Sticky toffee pudding cake",
+  "Frozen lemon and blueberry mousse cake",
+  "Secret-ingredient chocolate bundt cake",
+  "White forest gateau",
+  "Ginger and honey biscuit cake with choc-orange icing",
+  "Giant Jaffa cake",
+  "Eric Lanlard’s clementine and pomegranate cake (gluten-free)",
+  "Coconut and lime angel cake",
+  "Daim bar layer cake",
+  "Elderflower, lemon and cherry cream flourless cake",
+  "Chetna Makan’s pistachio, cardamom and white chocolate cake",
+  "Simple buttercream icing",
+  "Chocolate porter cake",
+  "Triple-chocolate layer cake",
+  "Chocolate cola cake",
+  "Gluten-free chocolate cake with raspberries",
+  "Pop cakes",
+  "Mary Berry’s malted chocolate cake",
+  "Chocolate celebration layer cake",
+  "Apple caramel layer cake",
+  "Red velvet cake",
+  "Paul Hollywood’s ultimate carrot cake",
+  "Mary Berry’s very best chocolate and orange cake",
+  "Classic sponge cake",
+  "Gluten-free birthday cake sponge",
+  "Ultimate chocolate mousse cake",
+  "Lavender cupcakes",
+  "Chocolate and berry traybake",
+  "Easy coconut and chocolate cake",
+  "Lemon and coconut cake"
 ]
 
 // Initialize and add the map from Map JavaScript API https://developers.google.com/maps/documentation/javascript
-async function initMap(lat,lng,title) {
+async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
   const position = { lat: lat, lng: lng };
   // Request needed libraries.
-  //@ts-ignore
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
@@ -54,19 +85,39 @@ async function initMap(lat,lng,title) {
     mapId: "DEMO_MAP_ID",
   });
 
-  // The marker, positioned at Uluru
+  // The marker
   const marker = new AdvancedMarkerElement({
     map: map,
     position: position,
-    title: title,
+    title: "Hello World",
   });
+  if (setMarkersArr.length == 0){
+    return;
+  } else {
+    setMarkers(setMarkersArr,map);
+  }
 }
 
-initMap(55.953252,-3.188267,"Edinburgh"); //Default location, just because I like Edinburgh
+function setMarkers(places,map){
+  // const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+  for (let i = 0; i < places.length;i++){
+    const pinBackground = new google.maps.marker.PinElement({
+      background: "#FBBC04",
+    }); // Add feature for the new marker. Each const pinBackground can only be used once for each marker, so it needs to be in the for loop.
+
+    const marker = new google.maps.marker.AdvancedMarkerElement({
+      position: places[i],
+      map,
+      content: pinBackground.element
+    })
+    console.log(marker);
+  }
+}
+
+initMap(); //Default location, just because I like Edinburgh
 
 locationBtnEl.addEventListener('click',function(e){
   e.preventDefault();
-
   var locationInputText = locationInputEl.value.trim();
   var geoCodingURL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + locationInputText + "&key=" + googleMapAPIKey;
 
@@ -75,13 +126,50 @@ locationBtnEl.addEventListener('click',function(e){
     return response.json();
   }).then(function(dataGeoCode){
     console.log(dataGeoCode);
-    // console.log(dataGeoCode.results[0].geometry.location.lat);
-    var lat = dataGeoCode.results[0].geometry.location.lat;
-    var lng = dataGeoCode.results[0].geometry.location.lng;
+    var latNewPlace = dataGeoCode.results[0].geometry.location.lat;
+    var lngNewPlace = dataGeoCode.results[0].geometry.location.lng;
     var title = dataGeoCode.results[0].formatted_address;
 
-    initMap(lat,lng,title);
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "restaurant" + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.15) + "," + (latNewPlace-0.072609293) + "," + (lngNewPlace+0.15) + "," + (latNewPlace+0.072609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
 
+    fetch(mapBoxURL)
+    .then(function(response){
+      return response.json()
+    }).then(function(dataMapBox){
+      console.log(dataMapBox);
+
+      var places = []; // Array to store coordinates for all returned places
+      suggestPlaceEl.innerHTML = ""; // Clear inside the element upon the new search
+      var placeNumber = 0;
+      for (let i = 0; i< dataMapBox.features.length;i++){
+        placeNumber++;
+        var cardEl = document.createElement('div');
+        suggestPlaceEl.appendChild(cardEl);
+        cardEl.classList.add('card','mb-2');
+
+        var cardBodyEl = document.createElement('div');
+        cardEl.appendChild(cardBodyEl);
+        cardBodyEl.classList.add('card-body');
+
+        var placeHeader = document.createElement('h5');
+        placeHeader.innerHTML = dataMapBox.features[i].text;
+        // cardBodyEl.appendChild(placeNumber);
+        cardBodyEl.appendChild(placeHeader);
+
+        var address = document.createElement('p');
+        address.innerHTML = "Address: " + dataMapBox.features[i].place_name;
+        cardBodyEl.appendChild(address);
+        
+        var coordinates = {
+          lat: dataMapBox.features[i].geometry.coordinates[1],
+          lng: dataMapBox.features[i].geometry.coordinates[0]
+        }
+        places.push(coordinates);
+      }
+      console.log("Suggested places: " + places);
+
+      initMap(latNewPlace,lngNewPlace,places);      
+    })    
     // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     // console.log(nearbySearchURL);
     // fetch(nearbySearchURL)
@@ -90,22 +178,10 @@ locationBtnEl.addEventListener('click',function(e){
     // }).then(function(dataNearby){
     //   console.log(dataNearby);
     // })
-
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + availableDish[29].replace(/ /g,"%20") + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lng-0.5) + "," + (lat-0.022609293) + "," + (lng+0.5) + "," + (lat+0.022609293);
-    console.log(mapBoxURL);
-    fetch(mapBoxURL)
-    .then(function(response){
-      return response.json()
-    }).then(function(data){
-      console.log(data);
-    })
-
   }).catch(function(error){
     console.error(error);
   })
 })
-
-
 
 // Test new API Text Search
 // var locationInputText = locationInputEl.value.trim();
@@ -172,33 +248,6 @@ locationBtnEl.addEventListener('click',function(e){
 //     }
 // }
 // getRecipe();
-
-// async function getRecipe1(){
-//     const url = 'https://tasty.p.rapidapi.com/recipes/auto-complete?prefix=chicken%20soup';
-//     const options = {
-// 	    method: 'GET',
-// 	    headers: {
-// 		    'X-RapidAPI-Key': 'e0faed762bmsh60b9c6ae7e9fa90p165d20jsn437c35637387',
-// 		    'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
-// 	    }
-//     };
-
-//     try {
-// 	    const response = await fetch(url, options);
-// 	    const result = await response.text();
-// 	    console.log(result);
-//     } catch (error) {
-// 	    console.error(error);
-//     }
-// }
-// getRecipe1(); // Only ingredients
-
-
-
-
-
-
-
 
 // When the user enters the name of a dish, the restaurants/ bakeries with that dish will appear on the browser
 // Will the user need to enter a "location" into the input? - Perhaps try this option first, or the browser will get the approximate device location based on cell towers and WiFi nodes - Geolocation
