@@ -73,7 +73,7 @@ var availableDish = [
 ]
 
 // Initialize and add the map from Map JavaScript API https://developers.google.com/maps/documentation/javascript
-async function initMap(lat,lng,setMarkersArr = []) {
+async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
   const position = { lat: lat, lng: lng };
   // Request needed libraries.
   const { Map } = await google.maps.importLibrary("maps");
@@ -98,16 +98,22 @@ async function initMap(lat,lng,setMarkersArr = []) {
   }
 }
 
-function setMarkers(places,map){
+async function setMarkers(places,map){
+  const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+  
+  const pinBackground = new PinElement({
+    background: "#FBBC04",
+  });
   for (let i = 0; i < places.length;i++){
-    new google.maps.Marker({
+    const marker = new AdvancedMarkerElement({
       position: places[i],
-      map
+      map,
+      content: pinBackground.element
     })
   }
 }
 
-initMap(55.953252,-3.188267); //Default location, just because I like Edinburgh
+initMap(); //Default location, just because I like Edinburgh
 
 locationBtnEl.addEventListener('click',function(e){
   e.preventDefault();
@@ -123,7 +129,7 @@ locationBtnEl.addEventListener('click',function(e){
     var lngNewPlace = dataGeoCode.results[0].geometry.location.lng;
     var title = dataGeoCode.results[0].formatted_address;
 
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "restaurant" + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.5) + "," + (latNewPlace-0.122609293) + "," + (lngNewPlace+0.5) + "," + (latNewPlace+0.122609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "restaurant" + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.15) + "," + (latNewPlace-0.072609293) + "," + (lngNewPlace+0.15) + "," + (latNewPlace+0.072609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
 
     fetch(mapBoxURL)
     .then(function(response){
@@ -133,10 +139,12 @@ locationBtnEl.addEventListener('click',function(e){
 
       var places = []; // Array to store coordinates for all returned places
       suggestPlaceEl.innerHTML = ""; // Clear inside the element upon the new search
+      var placeNumber = 0;
       for (let i = 0; i< dataMapBox.features.length;i++){
+        placeNumber++;
         var cardEl = document.createElement('div');
         suggestPlaceEl.appendChild(cardEl);
-        cardEl.classList.add('card');
+        cardEl.classList.add('card','mb-2');
 
         var cardBodyEl = document.createElement('div');
         cardEl.appendChild(cardBodyEl);
@@ -144,6 +152,7 @@ locationBtnEl.addEventListener('click',function(e){
 
         var placeHeader = document.createElement('h5');
         placeHeader.innerHTML = dataMapBox.features[i].text;
+        // cardBodyEl.appendChild(placeNumber);
         cardBodyEl.appendChild(placeHeader);
 
         var address = document.createElement('p');
@@ -156,7 +165,7 @@ locationBtnEl.addEventListener('click',function(e){
         }
         places.push(coordinates);
       }
-      console.log(places);
+      console.log("Suggested places: " + places);
 
       initMap(latNewPlace,lngNewPlace,places);      
     })    
