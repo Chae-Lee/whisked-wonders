@@ -55,19 +55,34 @@ var fetchData = async () => {
       recipesByDifficulties = Object.groupBy(data, function(recipe){
         return recipe.difficulty
       })
-      console.log (recipesByDifficulties);
+      // console.log (recipesByDifficulties);
       recipeIndex = JSON.stringify(data); //to store the fetched data in a global variable
-      console.log (recipeIndex);
-
+      // console.log(recipeIndex);
       // Displaying list of recipes on page
       for (var i = 0; i < data.length; i++) {
-        var displayRecipes = document.createElement('ul');
+        // Top level
+        var displayRecipes = document.createElement('a');
+        // Inner level
+        var displayRecipesContentTitle = document.createElement('p');
+        var recipeTitle = data[i].title
+        displayRecipesContentTitle.innerHTML = recipeTitle;
+
+        var displayRecipesContentImage = document.createElement('img');
+        var image = data[i].image
+        displayRecipesContentImage.setAttribute("src", image);
+        displayRecipesContentImage.setAttribute("width", 200);
+        displayRecipesContentImage.setAttribute("height", 200);
+
         displayRecipes.dataset.difficulty=data[i].difficulty;
-        displayRecipes.innerHTML = data[i].title;
+        // displayRecipes.innerHTML = data[i].title;
+        displayRecipes.setAttribute("href", data[i].image);
+        
+
+        displayRecipes.appendChild(displayRecipesContentTitle);
+        displayRecipes.appendChild(displayRecipesContentImage);
+
         recipeEl.appendChild(displayRecipes);
       }
-      console.log(recipeIndex);
-      recipesByDifficulty(data);
 
     })
 };
@@ -77,7 +92,7 @@ console.log(recipeIndex); //currently not displaying as the console.log is execu
 
 // Adding functionality to the buttons on the page - filtering recipes based on their difficulty
 sortBtn.addEventListener('click', function(event){
-  if (!event.target.matches('button')){
+  if (!event.target.matches('button')){ //code to allow us to target only button elements from the html
     return
   }
   var difficulty = event.target.textContent.toLowerCase();
@@ -91,6 +106,10 @@ sortBtn.addEventListener('click', function(event){
     }
   }
 });
+
+recipeBtn.addEventListener ('click', function (event){
+  event.recipeEl
+})
 
 /* Next Steps 
 - display the images of the recipes 
