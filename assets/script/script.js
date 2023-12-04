@@ -59,29 +59,86 @@ var fetchData = async () => {
       recipeIndex = JSON.stringify(data); //to store the fetched data in a global variable
       // console.log(recipeIndex);
       // Displaying list of recipes on page
-      for (var i = 0; i < data.length; i++) {
-        // Top level
-        var displayRecipes = document.createElement('a');
-        // Inner level
-        var displayRecipesContentTitle = document.createElement('p');
-        var recipeTitle = data[i].title
-        displayRecipesContentTitle.innerHTML = recipeTitle;
+      // for (var i = 0; i < data.length; i++) {
+      //   // Top level
+      //   var displayRecipes = document.createElement('a');
+      //   // Inner level
+      //   var displayRecipesContentTitle = document.createElement('p');
+      //   var recipeTitle = data[i].title
+      //   displayRecipesContentTitle.innerHTML = recipeTitle;
 
-        var displayRecipesContentImage = document.createElement('img');
-        var image = data[i].image
-        displayRecipesContentImage.setAttribute("src", image);
-        displayRecipesContentImage.setAttribute("width", 200);
-        displayRecipesContentImage.setAttribute("height", 200);
+      //   var displayRecipesContentImage = document.createElement('img');
+      //   var image = data[i].image
+      //   displayRecipesContentImage.setAttribute("src", image);
+      //   displayRecipesContentImage.setAttribute("width", 200);
+      //   displayRecipesContentImage.setAttribute("height", 200);
 
-        displayRecipes.dataset.difficulty=data[i].difficulty;
-        // displayRecipes.innerHTML = data[i].title;
-        displayRecipes.setAttribute("href", data[i].image);
+      //   displayRecipes.dataset.difficulty=data[i].difficulty;
+      //   // displayRecipes.innerHTML = data[i].title;
+      //   displayRecipes.setAttribute("href", data[i].image);
         
 
-        displayRecipes.appendChild(displayRecipesContentTitle);
-        displayRecipes.appendChild(displayRecipesContentImage);
+      //   displayRecipes.appendChild(displayRecipesContentTitle);
+      //   displayRecipes.appendChild(displayRecipesContentImage);
 
-        recipeEl.appendChild(displayRecipes);
+      //   recipeEl.appendChild(displayRecipes);
+      // }
+
+      for (var i = 0; i < data.length; i++) {
+
+        var container = document.createElement("div");
+        container.setAttribute("class", "card");
+        container.setAttribute("style", "width: 18rem;");
+
+        var image = document.createElement("img");
+        image.setAttribute("class", "card-img-top");
+        image.setAttribute("src", data[i].image);
+        image.setAttribute("alt", data[i].title);
+
+        var cardBody = document.createElement("div");
+        cardBody.setAttribute("class", "card-body");
+
+        var header = document.createElement("h5");
+        header.setAttribute("class", "card-title");
+        header.textContent = "Card title"
+
+        var paragraph = document.createElement("p");
+        header.setAttribute("class", "card-text");
+        header.textContent = data[i].title
+
+        var button = document.createElement("a");
+        button.setAttribute("href", data[i].image)
+        button.setAttribute("class", "btn btn-primary");
+        button.textContent = "See recipe"
+
+
+        // // Top level
+        // var displayRecipes = document.createElement('a');
+        // // Inner level
+        // var displayRecipesContentTitle = document.createElement('p');
+        // var recipeTitle = data[i].title
+        // displayRecipesContentTitle.innerHTML = recipeTitle;
+
+        // var displayRecipesContentImage = document.createElement('img');
+        // var image = data[i].image
+        // displayRecipesContentImage.setAttribute("src", image);
+        // displayRecipesContentImage.setAttribute("width", 200);
+        // displayRecipesContentImage.setAttribute("height", 200);
+
+        // displayRecipes.dataset.difficulty=data[i].difficulty;
+        // // displayRecipes.innerHTML = data[i].title;
+        // displayRecipes.setAttribute("href", data[i].image);
+        
+
+        // displayRecipes.appendChild(displayRecipesContentTitle);
+        // displayRecipes.appendChild(displayRecipesContentImage);
+
+        cardBody.appendChild(button);
+        cardBody.appendChild(header);
+        cardBody.appendChild(paragraph);
+        container.appendChild(cardBody);
+        container.appendChild(image);
+        recipeEl.appendChild(container);
       }
 
     })
