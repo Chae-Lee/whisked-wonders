@@ -15,7 +15,7 @@
 var recipesByDifficulties;
 var recipes;
 var recipeEl = document.getElementById('recipeCards');
-var recipeIndex = "";
+var recipeIndex;
 
 // // Testing and Confirmation that the API data can be fetched
 var fetchData = async () => {
@@ -40,30 +40,28 @@ var fetchData = async () => {
     .then(function (response) {
       return response.json();
     }).then(function (data) {
-      // console.log (data); // console.logs to ensure all relevant data is fetched correctly from the API
-      // console.log (data[0].id);
-      // console.log (data[0].title);
-      // console.log (data[0].difficulty);
-      // console.log (data[0].image);
-      // console.log (JSON.stringify(data));
+      /* console.logs to ensure all relevant data is fetched correctly from the API
+      console.log (data); 
+      console.log (data[0].title);
+      console.log (data[0].difficulty); */
+// converting the key into lowercase
       for (var i=0; i<data.length; i++){
         data[i].difficulty=data[i].difficulty.toLowerCase();
         if (data[i].difficulty === 'a challenge') {
-          data[i].difficulty = 'hard';
+          data[i].difficulty = 'hard'; //changing the difficulty key 'A Challenge' into 'hard' for ease of use.
         }
       }
-
+// Filtering API based on their difficulty and adding to the global variable 
       recipesByDifficulties = Object.groupBy(data, function(recipe){
         return recipe.difficulty
       })
       console.log (recipesByDifficulties);
-
       recipeIndex = JSON.stringify(data); //to store the fetched data in a global variable
-      // return recipeIndex;
-      // List of recipes displayed on html page 
-      
+      console.log (recipeIndex);
+
+      // Displaying list of recipes on page
       for (var i = 0; i < data.length; i++) {
-        var displayRecipes = document.createElement('li');
+        var displayRecipes = document.createElement('ul');
         displayRecipes.dataset.difficulty=data[i].difficulty;
         displayRecipes.innerHTML = data[i].title;
         recipeEl.appendChild(displayRecipes);
@@ -77,24 +75,7 @@ var fetchData = async () => {
 fetchData();
 console.log(recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
 
-// // Function to categorise recipes by difficulty
-// function recipesByDifficulty(data) {
-//   for (var i = 0; i < data.length; i++) {
-//     var difficulty = data[i].difficulty.toLowerCase();
-//     switch (difficulty) {
-//       case 'easy':
-//         easyRecipe.push(data[i]);
-//         break;
-//       case 'medium':
-//         mediumRecipe.push(data[i]);
-//         break;
-//       case 'A challenge':
-//         hardRecipe.push(data[i]);
-//         break;
-//     }
-//   }
-// }
-
+// Adding functionality to the buttons on the page - filtering recipes based on their difficulty
 sortBtn.addEventListener('click', function(event){
   if (!event.target.matches('button')){
     return
@@ -108,7 +89,11 @@ sortBtn.addEventListener('click', function(event){
     } else {
       recipeEl.children[i].style.display = 'none';
     }
-
   }
-})
+});
 
+/* Next Steps 
+- display the images of the recipes 
+- create them into links OR buttons that can be clicked for recipe details 
+- stop hero banner changing based on the size of the content (HTML & CSS )
+ */
