@@ -111,6 +111,8 @@ var fetchData = async () => {
         button.setAttribute("class", "btn btn-primary");
         button.textContent = "See recipe"
         
+        container.dataset.difficulty = data[i].difficulty;
+
         container.appendChild(image);
         cardBody.appendChild(header);
         cardBody.appendChild(paragraph);
@@ -118,12 +120,11 @@ var fetchData = async () => {
         container.appendChild(cardBody);
         recipeEl.appendChild(container);
       }
-
     })
 };
 
 fetchData();
-console.log(recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
+// console.log(recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
 
 // Adding functionality to the buttons on the page - filtering recipes based on their difficulty
 sortBtn.addEventListener('click', function(event){
