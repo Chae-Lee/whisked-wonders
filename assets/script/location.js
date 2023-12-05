@@ -2,8 +2,8 @@ var googleMapAPIKey = "AIzaSyDFfKtEpR4sFVJZEPpd4hkPhuRU6wmifGE";
 var map;
 var newPlace = {lat: 55.953252, lng: -3.188267} // Default location for the map
 
-var service;
-var infowindow;
+// var service;
+// var infowindow;
 var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
@@ -84,7 +84,6 @@ async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
     center: position,
     mapId: "DEMO_MAP_ID",
   });
-
   // The marker
   const marker = new AdvancedMarkerElement({
     map: map,
@@ -149,7 +148,7 @@ locationBtnEl.addEventListener('click',function(e){
 
         var cardBodyEl = document.createElement('div');
         cardEl.appendChild(cardBodyEl);
-        cardBodyEl.classList.add('card-body');
+        cardBodyEl.classList.add('card-body','m-0');
 
         var placeHeader = document.createElement('h5');
         placeHeader.innerHTML = dataMapBox.features[i].text;
@@ -170,14 +169,14 @@ locationBtnEl.addEventListener('click',function(e){
 
       initMap(latNewPlace,lngNewPlace,places);      
     })    
-    // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
-    // console.log(nearbySearchURL);
-    // fetch(nearbySearchURL)
-    // .then(function(response1){
-    //   return response1.json();
-    // }).then(function(dataNearby){
-    //   console.log(dataNearby);
-    // })
+    var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latNewPlace + "%2C" + lngNewPlace + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
+    console.log(nearbySearchURL);
+    fetch(nearbySearchURL)
+    .then(function(response1){
+      return response1.json();
+    }).then(function(dataNearby){
+      console.log(dataNearby);
+    })
   }).catch(function(error){
     console.error(error);
   })
