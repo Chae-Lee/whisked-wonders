@@ -58,11 +58,12 @@ var fetchData = async () => {
       // console.log (recipesByDifficulties);
       recipeIndex = JSON.stringify(data); //to store the fetched data in a global variable
       // console.log(recipeIndex);
-      // Displaying list of recipes on page
+
+// Displaying list of recipes on page (basic design)
       // for (var i = 0; i < data.length; i++) {
-      //   // Top level
+      // // Top level
       //   var displayRecipes = document.createElement('a');
-      //   // Inner level
+      // // Inner level
       //   var displayRecipesContentTitle = document.createElement('p');
       //   var recipeTitle = data[i].title
       //   displayRecipesContentTitle.innerHTML = recipeTitle;
@@ -77,15 +78,14 @@ var fetchData = async () => {
       //   // displayRecipes.innerHTML = data[i].title;
       //   displayRecipes.setAttribute("href", data[i].image);
         
-
       //   displayRecipes.appendChild(displayRecipesContentTitle);
       //   displayRecipes.appendChild(displayRecipesContentImage);
 
       //   recipeEl.appendChild(displayRecipes);
       // }
-
+      
+//Addition of Bootstrap cards elements and attributes
       for (var i = 0; i < data.length; i++) {
-
         var container = document.createElement("div");
         container.setAttribute("class", "card");
         container.setAttribute("style", "width: 18rem;");
@@ -110,42 +110,21 @@ var fetchData = async () => {
         button.setAttribute("href", data[i].image)
         button.setAttribute("class", "btn btn-primary");
         button.textContent = "See recipe"
-
-
-        // // Top level
-        // var displayRecipes = document.createElement('a');
-        // // Inner level
-        // var displayRecipesContentTitle = document.createElement('p');
-        // var recipeTitle = data[i].title
-        // displayRecipesContentTitle.innerHTML = recipeTitle;
-
-        // var displayRecipesContentImage = document.createElement('img');
-        // var image = data[i].image
-        // displayRecipesContentImage.setAttribute("src", image);
-        // displayRecipesContentImage.setAttribute("width", 200);
-        // displayRecipesContentImage.setAttribute("height", 200);
-
-        // displayRecipes.dataset.difficulty=data[i].difficulty;
-        // // displayRecipes.innerHTML = data[i].title;
-        // displayRecipes.setAttribute("href", data[i].image);
         
+        container.dataset.difficulty = data[i].difficulty;
 
-        // displayRecipes.appendChild(displayRecipesContentTitle);
-        // displayRecipes.appendChild(displayRecipesContentImage);
-
-        cardBody.appendChild(button);
+        container.appendChild(image);
         cardBody.appendChild(header);
         cardBody.appendChild(paragraph);
+        cardBody.appendChild(button);
         container.appendChild(cardBody);
-        container.appendChild(image);
         recipeEl.appendChild(container);
       }
-
     })
 };
 
 fetchData();
-console.log(recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
+// console.log(recipeIndex); //currently not displaying as the console.log is executed before the data is fetched from API
 
 // Adding functionality to the buttons on the page - filtering recipes based on their difficulty
 sortBtn.addEventListener('click', function(event){
