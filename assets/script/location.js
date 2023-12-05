@@ -168,15 +168,18 @@ locationBtnEl.addEventListener('click',function(e){
       console.log("Suggested places: " + places);
 
       initMap(latNewPlace,lngNewPlace,places);      
-    })    
+    })
+
     var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latNewPlace + "%2C" + lngNewPlace + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     console.log(nearbySearchURL);
-    fetch(nearbySearchURL)
-    .then(function(response1){
-      return response1.json();
-    }).then(function(dataNearby){
-      console.log(dataNearby);
-    })
+    
+    fetch(nearbySearchURL,{mode: "no-cors"})
+      .then(function (responseNearby) {
+        console.log("hello", responseNearby);
+        return responseNearby.json();
+      }).then(function (dataNearby) {
+        console.log("data retrieve: ",dataNearby);
+      })
   }).catch(function(error){
     console.error(error);
   })
