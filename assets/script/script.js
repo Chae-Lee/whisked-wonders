@@ -27,6 +27,7 @@ var fetchData = async () => {
       'X-RapidAPI-Host': 'the-birthday-cake-db.p.rapidapi.com'
     }
   };
+  
   // //try catch statement that can be used to check that data can be pulled from the API
   // try {
   // 	const response = await fetch(url, options);
@@ -40,6 +41,7 @@ var fetchData = async () => {
     .then(function (response) {
       return response.json();
     }).then(function (data) {
+      console.log (data);
       /* console.logs to ensure all relevant data is fetched correctly from the API
       console.log (data); 
       console.log (data[0].title);
