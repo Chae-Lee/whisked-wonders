@@ -37,6 +37,7 @@ background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
 position: relative;
+padding-bottom: 300px;
 }
 
 /* Place text in the middle of the image */
