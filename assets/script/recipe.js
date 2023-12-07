@@ -18,6 +18,25 @@ var fetchData = async () => {
     })
   };
 
+  
+
+  var recipeDisplayEl = document.createElement ("div");
+  recipeDisplayEl.setAttribute("class", "")
+
+  /*
+  To pull the full recipe data 
+  - do data- and setAttribute 
+  - getAttribute
+
+  To display the recipe onto the page 
+  - separate page? or display within the page? and hide all the rest of the recipe cards? 
+    - Append / Prepend 
+    - How to display the data? within the card? 
+      - need to think about the styling of the recipe 
+  
+
+  */
+
 // try {
 //   const response = await fetch(url, options);
 //   const result = await response.text();

@@ -85,7 +85,8 @@ var fetchData = async () => {
 
       //   recipeEl.appendChild(displayRecipes);
       // }
-      
+
+      var recipeOnly = []; 
 //Addition of Bootstrap cards elements and attributes
       for (var i = 0; i < data.length; i++) {
         var container = document.createElement("div");
@@ -110,7 +111,7 @@ var fetchData = async () => {
 
         var button = document.createElement("a");
         button.setAttribute("href", data[i].image)
-        button.setAttribute("class", "btn btn-primary");
+        button.setAttribute("class", "btn btn-primary ");
         button.textContent = "See recipe"
         
         container.dataset.difficulty = data[i].difficulty;
@@ -147,4 +148,8 @@ sortBtn.addEventListener('click', function(event){
 
 recipeBtn.addEventListener ('click', function (event){
   event.recipeEl
+})
+
+button.addEventListener ('click', function (event){
+  event.button
 })
