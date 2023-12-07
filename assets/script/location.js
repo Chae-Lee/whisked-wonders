@@ -2,8 +2,6 @@ var googleMapAPIKey = "AIzaSyDFfKtEpR4sFVJZEPpd4hkPhuRU6wmifGE";
 var map;
 var newPlace = {lat: 55.953252, lng: -3.188267} // Default location for the map
 
-var service;
-var infowindow;
 var locationInputEl = document.getElementById('location-search-input');
 var locationBtnEl = document.getElementById('location-search-button');
 
@@ -84,7 +82,6 @@ async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
     center: position,
     mapId: "DEMO_MAP_ID",
   });
-
   // The marker
   const marker = new AdvancedMarkerElement({
     map: map,
@@ -99,7 +96,6 @@ async function initMap(lat = 55.953252,lng = -3.188267,setMarkersArr = []) {
 }
 
 function setMarkers(places,map){
-  // const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
   for (let i = 0; i < places.length;i++){
     const pinBackground = new google.maps.marker.PinElement({
       background: "#FBBC04",
@@ -110,7 +106,7 @@ function setMarkers(places,map){
       map,
       content: pinBackground.element
     })
-    console.log(marker);
+    // console.log(marker);
   }
 }
 
@@ -124,13 +120,13 @@ locationBtnEl.addEventListener('click',function(e){
   fetch(geoCodingURL)
   .then(function(response){
     return response.json();
-  }).then(function(dataGeoCode){
+  }).then(async function(dataGeoCode){
     console.log(dataGeoCode);
-    var latNewPlace = dataGeoCode.results[0].geometry.location.lat;
-    var lngNewPlace = dataGeoCode.results[0].geometry.location.lng;
+    var latNewPlace = await dataGeoCode.results[0].geometry.location.lat;
+    var lngNewPlace = await dataGeoCode.results[0].geometry.location.lng;
     var title = dataGeoCode.results[0].formatted_address;
 
-    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "restaurant" + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.15) + "," + (latNewPlace-0.072609293) + "," + (lngNewPlace+0.15) + "," + (latNewPlace+0.072609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
+    var mapBoxURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + "cake&coffee&bakery" + ".json?type=poi" + "&access_token=" + mapBoxAPIKey + "&bbox=" + (lngNewPlace-0.15) + "," + (latNewPlace-0.072609293) + "," + (lngNewPlace+0.15) + "," + (latNewPlace+0.072609293) + "&limit=10"; //availableDish[10].replace(/ /g,"%20")
 
     fetch(mapBoxURL)
     .then(function(response){
@@ -149,7 +145,7 @@ locationBtnEl.addEventListener('click',function(e){
 
         var cardBodyEl = document.createElement('div');
         cardEl.appendChild(cardBodyEl);
-        cardBodyEl.classList.add('card-body');
+        cardBodyEl.classList.add('card-body','m-0');
 
         var placeHeader = document.createElement('h5');
         placeHeader.innerHTML = dataMapBox.features[i].text;
@@ -169,20 +165,52 @@ locationBtnEl.addEventListener('click',function(e){
       console.log("Suggested places: " + places);
 
       initMap(latNewPlace,lngNewPlace,places);      
-    })    
-    // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
+    })
+
+    await searchNearbyAPI(latNewPlace,lngNewPlace);
+
+    // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latNewPlace + "%2C" + lngNewPlace + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     // console.log(nearbySearchURL);
-    // fetch(nearbySearchURL)
-    // .then(function(response1){
-    //   return response1.json();
-    // }).then(function(dataNearby){
-    //   console.log(dataNearby);
-    // })
-  }).catch(function(error){
-    console.error(error);
-  })
+    
+    // fetch(nearbySearchURL,{mode: "no-cors"})
+    //   .then(function (responseNearby) {
+    //     console.log("hello", responseNearby);
+    //     return responseNearby.json();
+    //   }).then(function (dataNearby) {
+    //     console.log("data retrieve: ",dataNearby);
+    //   })
+  })//.catch(function(error){
+    // console.error(error);
+  // })
 })
 
+
+async function searchNearbyAPI(lat,lng) {
+  let nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=5000" + "&type=restaurant" + "&key=" + googleMapAPIKey + "&pagetoken"; // 
+  
+  console.log("API link: ", nearbySearchURL);
+  const response = await fetch(nearbySearchURL,{
+    mode: "no-cors",
+    headers:{
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify(data),
+  })
+  console.log("data retrieve: ",response);
+  // const jsonFile = await response.json();
+
+  // console.log("data here: ", jsonFile);
+  
+  return response.json();
+
+  // fetch(await nearbySearchURL,{mode: "no-cors"})
+  //   .then(function (responseNearby) {
+  //     console.log("hello", responseNearby);
+  //     return responseNearby.json();
+  //   }).then(function (dataNearby){
+  //     console.log("data retrieve: ",dataNearby);
+  //   })
+}
 // Test new API Text Search
 // var locationInputText = locationInputEl.value.trim();
 
