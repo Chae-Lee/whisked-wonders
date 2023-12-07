@@ -174,8 +174,18 @@ recipeEl.addEventListener ('click', function (event){
     console.log("this should return one recipe" , data);
     console.log(data.title);
 
-    var recipeTitle = document.createElement('div');
+    var recipeCard = document.createElement('div');
+    recipeCard.classList.add('card','mt-3');
+
+    var recipeCardHeader = document.createElement('div');
+    recipeCardHeader.classList.add('card-header');
+
+    var recipeCardBody = document.createElement('div');
+    recipeCardBody.classList.add('card-body');
+
+    var recipeTitle = document.createElement('h5');
     recipeTitle.textContent = data.title;
+    recipeTitle.setAttribute("class","card-title");
 
     var recipeMethod = document.createElement ('div');
     recipeMethod.textContent = data.method;
@@ -213,13 +223,18 @@ recipeEl.addEventListener ('click', function (event){
       methodList.appendChild(methodLi);
     }
 
-    recipeMethodsEl.appendChild (recipeTitle);
-    recipeMethodsEl.appendChild (recipeImage);
-    recipeMethodsEl.appendChild (recipePortion);
-    recipeMethodsEl.appendChild (recipeTime);
-    recipeMethodsEl.appendChild (description);
-    recipeMethodsEl.appendChild (ingredientList);
-    recipeMethodsEl.appendChild(methodList);
+    recipeMethodsEl.appendChild(recipeCard);
+    recipeCard.appendChild(recipeCardHeader);
+    recipeCard.appendChild(recipeCardBody);
+
+    recipeCardHeader.appendChild (recipeTitle);
+
+    recipeCardBody.appendChild (recipeImage);
+    recipeCardBody.appendChild (recipePortion);
+    recipeCardBody.appendChild (recipeTime);
+    recipeCardBody.appendChild (description);
+    recipeCardBody.appendChild (ingredientList);
+    recipeCardBody.appendChild(methodList);
 
 })
 });
