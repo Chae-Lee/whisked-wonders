@@ -4,6 +4,19 @@
     width: 100%; /* The width is the width of the web page */
 }
 
-#hide {
-    display: none;
-}
+.top {
+    position: relative;
+    width: 100%;
+    height: 40vh;
+    overflow: hidden; 
+  }
+
+.top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+  }
