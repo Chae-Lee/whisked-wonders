@@ -75,6 +75,10 @@ body {
     padding: 20px;
   }  
 
+  .middle h2 {
+    font-family: 'Nova Square', sans-serif;
+  }
+
   /* Footer icons */
   footer {
     bottom: 0;
@@ -320,4 +324,14 @@ body {
 }
 
 
+
+.recipe-button {
+  right: 250px;
+  top: 20px;
+}
+
+.location-button {
+  left: 250px;
+  top: 20px;
+}
 
