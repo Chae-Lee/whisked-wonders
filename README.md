@@ -1,10 +1,10 @@
 # Whisked Wonders
 
+<b> This is a application that displays a landing page which allows users to search of recipes or locations of bakeries. This application runs in the browser and features dynamically updated HTML and CSS that is powered by JavaScript code. </b>
+
 ## Description
 
 Many people around the world have a sweet tooth but sometimes can’t decide either baking at home or finding the nearest location. The website makes this an easier decision by allowing a customer to choose between the two. The website allows the user to browse for different recipes of delicious desserts, in which they can choose to prepare the dessert by themselves. Otherwise, the user has the option to find nearby bakeries around the location that the user choose.
-
-This is a application that runs in the browser and features dynamically updated HTML and CSS that is powered by JavaScript code. 
 
 
 ## User story
@@ -28,8 +28,9 @@ with the option to locate nearby bakeries if I prefer not to bake myself.
 
 ## Acknowledgement
 
+Special thanks to our Instructor Junghoon Yoon for his time and efforts he provided throughout the completion of this project. Your useful advice and guidance were crucial for the completion of this project. 
+Also special thanks to our Teaching Assistant team Jessica Song, Andy Fish and Chad Hinds who have provided support during this project. 
 
-## Visual
 
 ## Usage
 Code is written to display the landing page where it either takes the user to the recipes page or the location page. 
@@ -42,6 +43,9 @@ Location page will display Google Maps using the 'Google Map Geocoding' & 'Mapbo
 ## The final deployed application should look like this
 
 <b> URL to the deployed Application </b>
+https://chae-lee.github.io/whisked-wonders/ 
+
+![Whisked Wonders Baking Recipe and Location Search Website GIF](./Images/whiskedWonders.gif)
 
 
 
