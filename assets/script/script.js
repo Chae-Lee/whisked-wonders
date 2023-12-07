@@ -28,7 +28,7 @@ var fetchData = async () => {
     }
   };
   
-  // //try catch statement that can be used to check that data can be pulled from the API
+  // //Error Handler - try catch statement that can be used to check that data can be pulled from the API
   // try {
   // 	const response = await fetch(url, options);
   // 	const result = await response.text();
@@ -148,9 +148,3 @@ sortBtn.addEventListener('click', function(event){
 recipeBtn.addEventListener ('click', function (event){
   event.recipeEl
 })
-
-/* Next Steps 
-- display the images of the recipes 
-- create them into links OR buttons that can be clicked for recipe details 
-- stop hero banner changing based on the size of the content (HTML & CSS )
- */
