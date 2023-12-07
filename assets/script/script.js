@@ -88,7 +88,7 @@ var fetchData = async () => {
       //   recipeEl.appendChild(displayRecipes);
       // }
 
-//Addition of Bootstrap cards elements and attributes
+//Addition of Bootstrap cards elements and attributes to display all the recipes from the API (title, image, button)
       for (var i = 0; i < data.length; i++) {
         var container = document.createElement("div");
         container.setAttribute("class", "card");
@@ -153,6 +153,7 @@ sortBtn.addEventListener('click', function(event){
   }
 });
 
+// Function to pull the relevant recipe when a specific recipe button is clicked
 recipeEl.addEventListener ('click', function (event){
   console.log (event.target);
   var recipeId = event.target.getAttribute ('data-recipe');
@@ -167,13 +168,14 @@ recipeEl.addEventListener ('click', function (event){
     }
   };
 
+//Pulling the full recipe data to display on the screen 
   fetch(url, options)
   .then(function (response) {
     return response.json();
   }).then(function(data) {
     console.log("this should return one recipe" , data);
     console.log(data.title);
-
+//Creating individual elements to contain relevant recipe data
     var recipeCard = document.createElement('div');
     recipeCard.classList.add('card','mt-3');
 
@@ -208,13 +210,14 @@ recipeEl.addEventListener ('click', function (event){
 
     var ingredientList = document.createElement ('ol');
 
+// For loop to access the array of data within the original data pulled 
     for (var i=0; i<data.ingredients.length; i++){
       var ingredientsLi = document.createElement ('li');
       ingredientsLi.textContent = data.ingredients[i];
       ingredientList.appendChild (ingredientsLi);
     }
-
-    var methodList = document.createElement('ol');
+// For loop to access the data in an object format which has different key value pairing 
+    var methodList = document.createElement('ol'); 
     //this is to iterate through methods
     for(var j = 0; j < data.method.length; j++) {
       var recipeMethod = `${data.method[j][`Step ${j+1}`]}`;
@@ -223,6 +226,7 @@ recipeEl.addEventListener ('click', function (event){
       methodList.appendChild(methodLi);
     }
 
+//Appending all the created elements to the div to display on the browser
     recipeMethodsEl.appendChild(recipeCard);
     recipeCard.appendChild(recipeCardHeader);
     recipeCard.appendChild(recipeCardBody);
