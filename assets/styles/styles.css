@@ -5,14 +5,6 @@ body {
     text-align: center;
     font-family: 'Merriweather', serif;
   }
-
-
-  hr {
-    border: dotted #EAF6F6 6px;
-    border-bottom: none;
-    width: 4%;
-    margin: 100px auto;
-  }
   
 
 .nav-icons {
@@ -80,6 +72,7 @@ body {
 
   .middle {
     text-align: center;
+    padding: 20px;
   }  
 
   /* Footer icons */
@@ -328,12 +321,3 @@ body {
 
 
 
-.recipe-button, .location-button {
-  padding: 30px 40px; /* Increase the padding of the icons to make them larger */
-}
-
-
-
-.recipe-button:hover, .location-button:hover {
-  background-color: rgba(255, 255, 255, 0.8); /* Reduce the opacity of the background color during hover */
-}
