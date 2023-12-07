@@ -27,7 +27,7 @@ body, html {
 /* The hero image */
 .hero-image {
 /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://noblepig.com/site/wp-content/uploads/2019/11/Smoked-Gouda-and-Harvati-Oven-Omelet-6.jpg");
+background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/Images/bakery-2.jpeg);
 
 /* Set a specific height */
 height: 50%;
@@ -47,19 +47,35 @@ position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
-color: white;
+color: rgb(197, 154, 154);
+font-family:cursive;
 }
+
 
 button { 
   border-radius: 10px;
+  justify-content: space-between;
 }
 
+/* Spacing of buttons in hero banner */
+#sortBtn {
+  display: flex;
+  justify-content: space-evenly;
+  
+}
+
+/* Colour of buttons in hero banner */
+#sortBtn button {
+  background-color: #F5E8C7;
+}
 
 /* Recipe cards section */
 
 .recipeCards {
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 /* footer */
@@ -87,4 +103,35 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  
+}
+
+.card {
+  margin-right: 10px;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5E8C7;
+  color: #191919;
+  border-color: #F5E8C7;
+  
+}
+
+.card-text {
+  margin-bottom: 40px;
+}
+
+.buttonStyle {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin-bottom: 10px;
 }

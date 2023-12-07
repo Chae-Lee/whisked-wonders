@@ -89,6 +89,8 @@ var fetchData = async () => {
         var container = document.createElement("div");
         container.setAttribute("class", "card");
         container.setAttribute("style", "width: 18rem;");
+        
+        
 
         var image = document.createElement("img");
         image.setAttribute("class", "card-img-top");
@@ -106,17 +108,22 @@ var fetchData = async () => {
         header.setAttribute("class", "card-text");
         header.textContent = data[i].title
 
+
+        var buttonData = document.createElement("div")
+        buttonData.setAttribute("class", "buttonStyle");
         var button = document.createElement("a");
         button.setAttribute("href", data[i].image)
         button.setAttribute("class", "btn btn-primary");
         button.textContent = "See recipe"
+
         
         container.dataset.difficulty = data[i].difficulty;
 
+        buttonData.appendChild(button);
         container.appendChild(image);
         cardBody.appendChild(header);
         cardBody.appendChild(paragraph);
-        cardBody.appendChild(button);
+        cardBody.appendChild(buttonData);
         container.appendChild(cardBody);
         recipeEl.appendChild(container);
       }
