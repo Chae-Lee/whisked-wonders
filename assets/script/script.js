@@ -27,7 +27,8 @@ var fetchData = async () => {
       'X-RapidAPI-Host': 'the-birthday-cake-db.p.rapidapi.com'
     }
   };
-  // //try catch statement that can be used to check that data can be pulled from the API
+  
+  // //Error Handler - try catch statement that can be used to check that data can be pulled from the API
   // try {
   // 	const response = await fetch(url, options);
   // 	const result = await response.text();
@@ -40,6 +41,7 @@ var fetchData = async () => {
     .then(function (response) {
       return response.json();
     }).then(function (data) {
+      console.log (data);
       /* console.logs to ensure all relevant data is fetched correctly from the API
       console.log (data); 
       console.log (data[0].title);
@@ -146,9 +148,3 @@ sortBtn.addEventListener('click', function(event){
 recipeBtn.addEventListener ('click', function (event){
   event.recipeEl
 })
-
-/* Next Steps 
-- display the images of the recipes 
-- create them into links OR buttons that can be clicked for recipe details 
-- stop hero banner changing based on the size of the content (HTML & CSS )
- */
