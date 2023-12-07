@@ -16,6 +16,7 @@ var recipesByDifficulties;
 var recipes;
 var recipeEl = document.getElementById('recipeCards');
 var recipeIndex;
+var recipeMethodsEl = document.getElementById('recipe-methods');
 
 // // Testing and Confirmation that the API data can be fetched
 var fetchData = async () => {
@@ -36,6 +37,7 @@ var fetchData = async () => {
   // } catch (error) {
   // 	console.error(error);
   // }
+
 
   fetch(url, options)
     .then(function (response) {
@@ -86,17 +88,13 @@ var fetchData = async () => {
       //   recipeEl.appendChild(displayRecipes);
       // }
 
-      var recipeOnly = []; 
 //Addition of Bootstrap cards elements and attributes
-      var recipeOnly = [];
-
       for (var i = 0; i < data.length; i++) {
         var container = document.createElement("div");
         container.setAttribute("class", "card");
         container.setAttribute("style", "width: 18rem;");
+        container.dataset.difficulty = data[i].difficulty;
         
-        
-
         var image = document.createElement("img");
         image.setAttribute("class", "card-img-top");
         image.setAttribute("src", data[i].image);
@@ -113,16 +111,15 @@ var fetchData = async () => {
         header.setAttribute("class", "card-text");
         header.textContent = data[i].title
 
-
         var buttonData = document.createElement("div")
         buttonData.setAttribute("class", "buttonStyle");
-        var button = document.createElement("a");
-        button.setAttribute("href", data[i].image)
+
+        var button = document.createElement("btn");
+        // button.setAttribute("href", data[i].image)
         button.setAttribute("class", "btn btn-primary ");
         button.textContent = "See recipe"
+        button.setAttribute ("data-recipe", data[i].id);
 
-        
-        container.dataset.difficulty = data[i].difficulty;
 
         buttonData.appendChild(button);
         container.appendChild(image);
@@ -132,12 +129,7 @@ var fetchData = async () => {
         container.appendChild(cardBody);
         recipeEl.appendChild(container);
 
-        var eachDish = [];
-        eachDish.push(data[i].id);
-        eachDish.push(data[i].title);
-        recipeOnly.push(eachDish);
       }
-      console.log("recipe data: ",recipeOnly);
     })
 };
 
@@ -161,10 +153,74 @@ sortBtn.addEventListener('click', function(event){
   }
 });
 
-recipeBtn.addEventListener ('click', function (event){
-  event.recipeEl
-})
+recipeEl.addEventListener ('click', function (event){
+  console.log (event.target);
+  var recipeId = event.target.getAttribute ('data-recipe');
+  console.log (recipeId);
 
-button.addEventListener ('click', function (event){
-  event.button
+  var url = 'https://the-birthday-cake-db.p.rapidapi.com/' + recipeId;
+  var options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': '637d11b810msh7d4930cc5d05c6ep1b0fcdjsnb524ebfaaff6',
+      'X-RapidAPI-Host': 'the-birthday-cake-db.p.rapidapi.com'
+    }
+  };
+
+  fetch(url, options)
+  .then(function (response) {
+    return response.json();
+  }).then(function(data) {
+    console.log("this should return one recipe" , data);
+    console.log(data.title);
+
+    var recipeTitle = document.createElement('div');
+    recipeTitle.textContent = data.title;
+
+    var recipeMethod = document.createElement ('div');
+    recipeMethod.textContent = data.method;
+
+    var description = document.createElement ('div');
+    description.textContent = data.description;
+
+    var recipeImage = document.createElement ('img');
+    recipeImage.setAttribute("src", data.image);
+    recipeImage.setAttribute("style", "width: 18rem;");
+
+    var recipeTime = document.createElement ('p');
+    recipeTime.textContent = data.time;
+
+    var recipePortion = document.createElement ('p');
+    recipePortion.textContent = data.portion;
+
+    var recipeIngredient = document.createElement ('p');
+    recipeIngredient.textContent = data.ingredients;
+
+    var ingredientList = document.createElement ('ol');
+
+    for (var i=0; i<data.ingredients.length; i++){
+      var ingredientsLi = document.createElement ('li');
+      ingredientsLi.textContent = data.ingredients[i];
+      ingredientList.appendChild (ingredientsLi);
+    }
+
+    var methodList = document.createElement('ol');
+    //this is to iterate through methods
+    for(var j = 0; j < data.method.length; j++) {
+      var recipeMethod = `${data.method[j][`Step ${j+1}`]}`;
+      var methodLi = document.createElement('li');
+      methodLi.textContent = recipeMethod;
+      methodList.appendChild(methodLi);
+    }
+
+    recipeMethodsEl.appendChild (recipeTitle);
+    recipeMethodsEl.appendChild (recipeImage);
+    recipeMethodsEl.appendChild (recipePortion);
+    recipeMethodsEl.appendChild (recipeTime);
+    recipeMethodsEl.appendChild (description);
+    recipeMethodsEl.appendChild (ingredientList);
+    recipeMethodsEl.appendChild(methodList);
+
 })
+});
+
