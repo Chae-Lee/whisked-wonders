@@ -87,6 +87,8 @@ var fetchData = async () => {
       // }
       
 //Addition of Bootstrap cards elements and attributes
+      var recipeOnly = [];
+
       for (var i = 0; i < data.length; i++) {
         var container = document.createElement("div");
         container.setAttribute("class", "card");
@@ -128,7 +130,13 @@ var fetchData = async () => {
         cardBody.appendChild(buttonData);
         container.appendChild(cardBody);
         recipeEl.appendChild(container);
+
+        var eachDish = [];
+        eachDish.push(data[i].id);
+        eachDish.push(data[i].title);
+        recipeOnly.push(eachDish);
       }
+      console.log("recipe data: ",recipeOnly);
     })
 };
 
