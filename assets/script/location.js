@@ -106,7 +106,6 @@ function setMarkers(places,map){
       map,
       content: pinBackground.element
     })
-    // console.log(marker);
   }
 }
 
@@ -149,7 +148,6 @@ locationBtnEl.addEventListener('click',function(e){
 
         var placeHeader = document.createElement('h5');
         placeHeader.innerHTML = dataMapBox.features[i].text;
-        // cardBodyEl.appendChild(placeNumber);
         cardBodyEl.appendChild(placeHeader);
 
         var address = document.createElement('p');
@@ -167,7 +165,7 @@ locationBtnEl.addEventListener('click',function(e){
       initMap(latNewPlace,lngNewPlace,places);      
     })
 
-    await searchNearbyAPI(latNewPlace,lngNewPlace);
+    // await searchNearbyAPI(latNewPlace,lngNewPlace);
 
     // var nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + latNewPlace + "%2C" + lngNewPlace + "&radius=10000" + "&type=restaurant" + "&key=" + googleMapAPIKey;
     // console.log(nearbySearchURL);
@@ -185,23 +183,23 @@ locationBtnEl.addEventListener('click',function(e){
 })
 
 
-async function searchNearbyAPI(lat,lng) {
-  let nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=5000" + "&type=restaurant" + "&key=" + googleMapAPIKey + "&pagetoken"; // 
+// async function searchNearbyAPI(lat,lng) {
+  // let nearbySearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "%2C" + lng + "&radius=5000" + "&type=restaurant" + "&key=" + googleMapAPIKey + "&pagetoken"; // 
   
-  console.log("API link: ", nearbySearchURL);
-  const response = await fetch(nearbySearchURL,{
-    mode: "no-cors",
-    headers:{
-      "Content-Type": "application/json",
-    },
-    // body: JSON.stringify(data),
-  })
-  console.log("data retrieve: ",response);
+  // console.log("API link: ", nearbySearchURL);
+  // const response = await fetch(nearbySearchURL,{
+  //   mode: "no-cors",
+  //   headers:{
+  //     "Content-Type": "application/json",
+  //   },
+  //   // body: JSON.stringify(data),
+  // })
+  // console.log("data retrieve: ",response);
   // const jsonFile = await response.json();
 
   // console.log("data here: ", jsonFile);
   
-  return response.json();
+  // return response.json();
 
   // fetch(await nearbySearchURL,{mode: "no-cors"})
   //   .then(function (responseNearby) {
@@ -210,7 +208,7 @@ async function searchNearbyAPI(lat,lng) {
   //   }).then(function (dataNearby){
   //     console.log("data retrieve: ",dataNearby);
   //   })
-}
+// }
 // Test new API Text Search
 // var locationInputText = locationInputEl.value.trim();
 
